@@ -1,0 +1,29 @@
+version: '3.5'
+
+services:
+  app:
+    image: gitea/gitea:latest
+    hostname: gitea
+    environment:
+      - DB_TYPE=mysql
+      - DB_HOST=gitea-mysql:3306
+      - DB_NAME=gitea
+      - DB_USER=gitea
+    ports:
+      - 2222:22
+    volumes:
+      - /var/data/gitea:/data:z
+    depends_on:
+      - db
+    
+  db:
+    image: mysql:5.7
+    hostname: gitea-mysql
+    environment:
+      - MYSQL_DATABASE=gitea
+      - MYSQL_USER=gitea
+      - MYSQL_PASSWORD_FILE=changeme
+      - MYSQL_ROOT_PASSWORD_FILE=changeme
+    volumes:
+      - /var/data/gitea/db:/var/lib/mysql:z
+      

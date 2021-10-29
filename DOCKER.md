@@ -1,5 +1,10 @@
 # Docker Zero->Hero
 
+Further reading:\
+[DockerDocs](https://docs.docker.com/get-started/)\
+[IBM](https://www.ibm.com/cloud/learn/docker)\
+
+
 ## Docker Defined:
 >Docker provides the ability to package and run an application in a loosely isolated environment called a container. The isolation and security allow you to run many containers simultaneously on a given host. Containers are lightweight and contain everything needed to run the application, so you do not need to rely on what is currently installed on the host. You can easily share containers while you work, and be sure that everyone you share with gets the same container that works in the same way.
 
@@ -19,7 +24,7 @@ Volumes:
 >A mapping of Host to Container file systems, allowing changes made to persist across container restarts. Docker allows for two forms of volumes: Named, and Bind.
 
 A named volume is used for simple persistence, where data is just dumped to the drive. \
-A Bind volume allows for targeted mountpoints, allowing us to modify and persist data. For example, you can mount the `/etc/hosts` file of your container, and add specific entries to it that you want to save and later modify.
+A Bind volume provides a means for targeted mountpoints, allowing us to modify and persist data. For example, you can mount the `/etc/hosts` file of your container, and add specific entries to it that you want to save and later modify.
 
 
 ## Docker Orchestration Overview
@@ -30,15 +35,27 @@ Multi-Container Applications:
 Docker-Compose:
 >A multi-contianer application orchestration tool, that takes templates in the form of a YAML file. The YAML file will define the images, volumes, and networks to be established, and create all the required containers and processes to facilitate the application.
 
-An example of a Docker-Compose file can be found [here.](examples/Docker-Compose.yaml).\
-This Docker-Compose file starts all the required containers required to host a local Gitea instance. 
+An example of a Docker-Compose file can be found [here.](examples/Docker-Compose.yml).\
+This Docker-Compose file starts all the required containers required to host a local Gitea instance. Docker abstracts the networking and intercommunication between the containers, and uses internal DNS.
 
 Docker Swarms
 >Multiple Applications (or Services) can be hosted and managed by a single machine, or a group of machines (or nodes), also called a cluster. This is accomplished by establishing a Swarm. A Swarm consists of up to seven Manager nodes, and each Manager can have multiple Worker nodes. The Manager node assignes tasks to Workers. By default, all Manager nodes are also Worker nodes. Worker nodes are able to join and leave the Swarm at any point, and the Manager will conduct automated Load-Balancing accordingly.
 
+# Dockerception
+
+>Docker containers can run inside of docker containers. This introduces a level of security risk, as the primary container will need access to the Docker socket. An attacker with access to a container with control of the Docker socket can execute any command that Docker is permitted to, as the root user of the host machine.
+
+The Docker socket:
+`/var/run/docker.sock`
+
+# CIP Stack High level overview
+
+>The CIP stack is currently a single node Swarm, meaning one Manager with 15 service stacks deployed to it. There are two primary predefined networks, used to direct traffic through Traefik, which acts as an HTTPS proxy. Internal communication is handled on predefined internal networks, established in each Docker-Compose yaml. For containers requiring persistance, volumes are established in `/var/data`.
+
+
 ## Docker Cheatsheet
 Docker commands should be executed using Sudo.\
-These are just the most commonly used commands, check the man pages for more.
+These are just the most {my} commonly used commands, check the man pages for more.
 
 Image Management:
 ```
@@ -68,8 +85,8 @@ docker start/stop/restart/pause containerid
 
 Docker-Compose
 ```
-docker-compose up Docker-Compose.yml -d
-docker-compose down Docker-Compose.yml          Start && Stopping via docker compose
+docker-compose  Docker-Compose.yml up -d         Start && Stopping via docker-compose 
+docker-compose  Docker-Compose.yml down         [ -d to detach the container from your terminal]
 ```
 
 Service Management:
