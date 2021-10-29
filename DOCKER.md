@@ -2,7 +2,7 @@
 
 Further reading:\
 [DockerDocs](https://docs.docker.com/get-started/)\
-[IBM](https://www.ibm.com/cloud/learn/docker)\
+[IBM](https://www.ibm.com/cloud/learn/docker)
 
 
 ## Docker Defined:
